@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xml:lang="en" lang="en">
+<h:head>
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
+    <!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>-->
+    <!--    <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet"/>-->
+    <h:outputStylesheet name="bootstrap.min.css" library="css"/>
+    <h:outputStylesheet name="main.css" library="css"/>
+    <link rel="icon" href="http://example.com/favicon.png"/>
+    <title>Register</title>
+</h:head>
+<h:body>
+    <h1>Register</h1>
+    <h:form styleClass="needs-validation">
+        <div class="form-row">
+            <div class="col mb-3">
+                <h:inputText styleClass="form-control" value="#{registerRequest.name}"
+                             a:placeholder="First name">
+                    <f:validateLength minimum="3" maximum="50"/>
+                    <f:validateRegex pattern="^[_A-z0-9]*((-|\s)*[_A-z0-9])*$"/>
+                </h:inputText>
+            </div>
+            <div class="col mb-3">
+                <h:inputText styleClass="form-control" value="#{registerRequest.surname}" id="validationTooltip02"
+                             a:placeholder="Last name">
+                    <f:validateLength minimum="3" maximum="50"/>
+                    <f:validateRegex pattern="^[_A-z0-9]*((-|\s)*[_A-z0-9])*$"/>
+                </h:inputText>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col mb-3">
+                <h:inputText styleClass="form-control" value="#{registerRequest.username}"
+                             id="validationTooltipUsername"
+                             a:placeholder="Username" aria-describedby="validationTooltipUsernamePrepend">
+                    <f:validateLength minimum="3" maximum="50"/>
+                    <f:validateRegex pattern="^[a-zA-Z\d]*$"/>
+                </h:inputText>
+            </div>
+            <div class="col mb-3">
+                <h:inputSecret styleClass="form-control" value="#{registerRequest.password}" id="validationTooltip06"
+                               a:placeholder="Password">
+                    <f:validateLength minimum="5" maximum="50"/>
+                    <f:validateRegex pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,}$"/>
+                </h:inputSecret>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col mb-3">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="validationTooltipUsernamePrepend">@</span>
+                        <h:inputText a:type="email" styleClass="form-control" value="#{registerRequest.email}"
+                                     id="validationTooltip03" a:placeholder="Email">
+                            <f:validateRegex pattern="^[a-zA-Z0-9_!#$%&amp;'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$"/>
+                            <!--
+                            https://howtodoinjava.com/regex/java-regex-validate-email-address/
+                            -->
+                        </h:inputText>
+                    </div>
+                </div>
+            </div>
+            <div class="col mb-3">
+                <h:inputText a:type="date" styleClass="form-control" value="#{registerRequest.birthDate}"
+                             id="validationTooltip05"
+                             a:placeholder="Date of birth YYYY-MM-DD">
+                    <f:convertDateTime pattern="yyyy-mm-dd"/>
+                </h:inputText>
+            </div>
+        </div>
+        <h:commandButton styleClass="btn btn-primary" value="Register" action="#{registerController.register}"/>
+    </h:form>
+</h:body>
+</html>
