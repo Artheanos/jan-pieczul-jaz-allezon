@@ -7,32 +7,37 @@
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core"
       xml:lang="en" lang="en">
 <h:head>
-    <title>${loginRequest.username}</title>
+    <title>LOGIN • ALLEZON</title>
     <!--    <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet"/>-->
     <h:outputStylesheet name="bootstrap.min.css" library="css"/>
     <h:outputStylesheet name="main.css" library="css"/>
 </h:head>
 <h:body>
-    <h1>Login</h1>
-    <h:form styleClass="needs-validation">
-        <div class="form-row">
-            <div class="col mb-3">
-                <h:inputText styleClass="form-control" name="username" value="#{loginRequest.username}"
-                             a:placeholder="Username">
-                    <f:validateLength minimum="3" maximum="15"/>
-                </h:inputText>
-                <h:message for="username"/>
+    <h:outputLabel styleClass="alert-warning" style="width: 100%;" rendered="${loginController.failed}">
+        <h1>${loginController.errorMessage}</h1>
+    </h:outputLabel>
+    <div>
+        <h1>Login</h1>
+        <h:form styleClass="needs-validation">
+            <div class="form-row">
+                <div class="col mb-3">
+                    <h:inputText styleClass="form-control" name="username" value="#{loginRequest.username}"
+                                 a:placeholder="Username">
+                        <f:validateLength minimum="3" maximum="15"/>
+                    </h:inputText>
+                    <h:message for="username"/>
+                </div>
             </div>
-        </div>
-        <div class="form-row">
-            <div class="col mb-3">
-                <h:inputSecret styleClass="form-control" name="password" value="#{loginRequest.password}"
-                               a:placeholder="Password"/>
+            <div class="form-row">
+                <div class="col mb-3">
+                    <h:inputSecret styleClass="form-control" name="password" value="#{loginRequest.password}"
+                                   a:placeholder="Password"/>
+                </div>
             </div>
-        </div>
-        <h:commandButton styleClass="btn btn-primary" value="Login" action="#{loginController.login}"/>
-        <br/>
-        <a style="float: right;" href="register.xhtml">Register</a>
-    </h:form>
+            <h:commandButton styleClass="btn btn-primary" value="Login" action="#{loginController.login}"/>
+            <br/>
+            <a style="float: right;" href="register.xhtml">Register</a>
+        </h:form>
+    </div>
 </h:body>
 </html>

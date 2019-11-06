@@ -17,6 +17,10 @@
     <title>Register</title>
 </h:head>
 <h:body>
+    <!--    TODO user exists message <h:outputLabel/>-->
+    <h:outputLabel styleClass="alert-warning" style="width: 100%;" rendered="${registerController.failed}">
+        <h1>${registerController.errorMessage}</h1>
+    </h:outputLabel>
     <h1>Register</h1>
     <h:form styleClass="needs-validation">
         <div class="form-row">
@@ -76,7 +80,6 @@
             </div>
         </div>
         <h:commandButton styleClass="btn btn-primary" value="Register" action="#{registerController.register}"/>
-        <h:message for="validationTooltip04"/>
         <h:messages globalOnly="true"/>
     </h:form>
 </h:body>

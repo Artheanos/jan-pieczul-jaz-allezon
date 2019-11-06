@@ -6,10 +6,17 @@ body {
 }
 
 @keyframes animeback {
-    0% {background-color: white}
-    50% {background-color: lightblue}
-    100% {background-color: white}
+    0% {
+        background-color: white
+    }
+    50% {
+        background-color: #f8d7da;
+    }
+    100% {
+        background-color: white
+    }
 }
+
 
 h1 {
     margin: 20px auto 20px auto;
