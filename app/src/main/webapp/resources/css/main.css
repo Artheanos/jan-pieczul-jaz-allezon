@@ -1,20 +1,5 @@
 body {
-    background-color: aliceblue;
-    animation-name: animeback;
-    animation-iteration-count: infinite;
-    animation-duration: 4s;
-}
-
-@keyframes animeback {
-    0% {
-        background-color: white
-    }
-    50% {
-        background-color: #f8d7da;
-    }
-    100% {
-        background-color: white
-    }
+    background-color: white;
 }
 
 

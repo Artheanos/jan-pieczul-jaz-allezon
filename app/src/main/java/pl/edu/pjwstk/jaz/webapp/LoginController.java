@@ -8,7 +8,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.Map;
 
 @Named
 @RequestScoped
@@ -31,12 +30,11 @@ public class LoginController {
 
     public String login() {
         FacesContext context = FacesContext.getCurrentInstance();
-        ProfileEntity profile = null;
+        ProfileEntity profile;
 
         profile = profileRepository.getProfile("username", loginRequest.getUsername());
 
         if (profile == null) {
-            context.getExternalContext().getSessionMap().put("user", loginRequest.getUsername());
             errorMessage = "Wrong username";
             return "login";
         }

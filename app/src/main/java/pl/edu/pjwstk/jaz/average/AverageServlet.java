@@ -22,18 +22,21 @@ public class AverageServlet extends HttpServlet {
 
         ArrayList<Integer> input_ints = AverageTools.string_to_ints(req.getParameter("average"));
 
-        respWriter.println(String.format(
-                "Average of (%s) is %s",
-                AverageTools.join_ints(", ", input_ints),
-                AverageTools.average(input_ints)
-        ));
+        if (input_ints.size() == 0)
+            respWriter.println("Could not calculate average\nNo ints were found");
+        else
+            respWriter.println(String.format(
+                    "Average of (%s) is %s",
+                    AverageTools.join_ints(", ", input_ints),
+                    AverageTools.average(input_ints)
+            ));
     }
 }
 
 
 class AverageTools {
 
-    static ArrayList<Integer> string_to_ints(String input) {
+    public static ArrayList<Integer> string_to_ints(String input) {
 
         ArrayList<Integer> result = new ArrayList<>();
 
@@ -44,15 +47,15 @@ class AverageTools {
         return result;
     }
 
-    static double average(int[] numbers) {
+    public static double average(int[] numbers) {
         return (double) IntStream.of(numbers).sum() / numbers.length;
     }
 
-    static double average(ArrayList<Integer> numbers) {
+    public static double average(ArrayList<Integer> numbers) {
         return average(numbers.stream().mapToInt(i -> i).toArray());
     }
 
-    static String join_ints(String joint, ArrayList<Integer> ints) {
+    public static String join_ints(String joint, ArrayList<Integer> ints) {
         StringBuilder result_builder = new StringBuilder();
         Iterator<Integer> iter = ints.iterator();
         while (iter.hasNext()) {

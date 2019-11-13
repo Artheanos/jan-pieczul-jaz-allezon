@@ -43,7 +43,6 @@ public class RegisterRequest {
     }
 
     public void setBirthDate(Date birthDate) {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-m-d")
         this.birthDate = birthDate;
     }
 

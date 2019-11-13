@@ -26,13 +26,13 @@
         <div class="form-row">
             <div class="col mb-3">
                 <h:inputText styleClass="form-control" value="#{registerRequest.name}"
-                             a:placeholder="First name" id="validationTooltip01">
+                             a:placeholder="First name" id="name">
                     <f:validateLength minimum="3" maximum="50"/>
                     <f:validateRegex pattern="^[_A-z0-9]*((-|\s)*[_A-z0-9])*$"/>
                 </h:inputText>
             </div>
             <div class="col mb-3">
-                <h:inputText styleClass="form-control" value="#{registerRequest.surname}" id="validationTooltip02"
+                <h:inputText styleClass="form-control" value="#{registerRequest.surname}" id="surname"
                              a:placeholder="Last name">
                     <f:validateLength minimum="3" maximum="50"/>
                     <f:validateRegex pattern="^[_A-z0-9]*((-|\s)*[_A-z0-9])*$"/>
@@ -42,20 +42,26 @@
         <div class="form-row">
             <div class="col mb-3">
                 <h:inputText styleClass="form-control" value="#{registerRequest.username}"
-                             id="validationTooltip03"
+                             id="username"
                              a:placeholder="Username" aria-describedby="validationTooltipUsernamePrepend">
                     <f:validateLength minimum="3" maximum="50"/>
                     <f:validateRegex pattern="^[a-zA-Z\d]*$"/>
                 </h:inputText>
             </div>
-            <div class="col mb-3">
-                <h:inputSecret styleClass="form-control" value="#{registerRequest.password}" id="validationTooltip04"
+            <div class="col mb-3" id="password-div">
+                <h:inputSecret styleClass="form-control" value="#{registerRequest.password}" id="password"
                                a:placeholder="Password"
                                validatorMessage="Password must contain at least 1 upper case letter 1 number and be 5 characters long">
                     <f:validateLength minimum="5" maximum="50"/>
-                    <f:validateRegex pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,}$"/>
+                    <f:validateRegex pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$"/>
                 </h:inputSecret>
             </div>
+<!--            <div class="col mb-3">-->
+<!--                <h:inputSecret styleClass="form-control" id="confirm-password" a:placeholder="Repeat Password">-->
+<!--                    <f:validator validatorId="duplicateValidator"/>-->
+<!--                    <f:attribute name="attrField" value=""/>-->
+<!--                </h:inputSecret>-->
+<!--            </div>-->
         </div>
         <div class="form-row">
             <div class="col mb-3">
@@ -63,7 +69,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="validationTooltipUsernamePrepend">@</span>
                         <h:inputText a:type="email" styleClass="form-control" value="#{registerRequest.email}"
-                                     id="validationTooltip05" a:placeholder="Email">
+                                     id="email" a:placeholder="Email">
                             <f:validateRegex pattern="^[a-zA-Z0-9_!#$%&amp;'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$"/>
                             <!--
                             https://howtodoinjava.com/regex/java-regex-validate-email-address/
@@ -74,7 +80,7 @@
             </div>
             <div class="col mb-3">
                 <h:inputText a:type="date" styleClass="form-control" value="#{registerRequest.birthDate}"
-                             id="validationTooltip06">
+                             id="date">
                     <f:convertDateTime pattern="yyyy-mm-dd"/>
                 </h:inputText>
             </div>

@@ -8,18 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-//@WebFilter("/")
+@WebFilter("/")
 public class LoginFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
-        if (userIsLogged())
+        String user = (String) req.getSession().getAttribute("user");
+        if (!user.isEmpty())
             chain.doFilter(req, res);
         else
             res.sendRedirect("http://google.com");
-    }
-
-    private boolean userIsLogged() {
-
-        return false;
     }
 }
