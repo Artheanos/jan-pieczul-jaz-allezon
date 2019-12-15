@@ -1,7 +1,11 @@
 package pl.edu.pjwstk.jaz.auth;
 
+import pl.edu.pjwstk.jaz.auction.AuctionEntity;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "profile")
@@ -9,6 +13,7 @@ public class ProfileEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String name;
     private String surname;
     private String username;
@@ -16,7 +21,17 @@ public class ProfileEntity {
     private String email;
     private Date birthDate;
 
-    public ProfileEntity(String name, String surname, String username, String encryptedPassword, String email, Date birthDate) {
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
+    private List<AuctionEntity> auctions = new ArrayList<>();
+
+    public ProfileEntity(
+            String name,
+            String surname,
+            String username,
+            String encryptedPassword,
+            String email,
+            Date birthDate
+    ) {
         this.name = name;
         this.surname = surname;
         this.username = username;
@@ -88,5 +103,13 @@ public class ProfileEntity {
     @Override
     public String toString() {
         return name + "\n" + surname + "\n" + username + "\n" + encryptedPassword + "\n" + birthDate;
+    }
+
+    public List<AuctionEntity> getAuctions() {
+        return auctions;
+    }
+
+    public void setAuctions(List<AuctionEntity> auctions) {
+        this.auctions = auctions;
     }
 }

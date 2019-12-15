@@ -12,3 +12,14 @@ form {
     margin: auto;
     max-width: 500px;
 }
+
+.site-header {
+    background: rgba(100, 100, 100, .5);
+    backdrop-filter: blur(10px);
+    --webkit--backdrop-filter: blur(10px);
+}
+
+.site-header * {
+    font-weight: bold;
+    color: white;
+}

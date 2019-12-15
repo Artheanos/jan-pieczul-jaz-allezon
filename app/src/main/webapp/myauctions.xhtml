@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <title>Welcome</title>
+    <h:outputStylesheet name="bootstrap.min.css" library="css"/>
+    <h:outputStylesheet name="main.css" library="css"/>
+    <style type="text/css">
+        .dummy {
+            user-select: none;
+            transition: all ease-in-out .2s;
+        }
+
+        .dummy:hover {
+            transform: scale(.9);
+            transition: all ease-in-out .2s;
+            cursor: pointer;
+        }
+
+        .dummy:active {
+            transform: scale(.75);
+        }
+    </style>
+</h:head>
+<h:body styleClass="text-center">
+    <div class="site-header sticky-top py-1">
+        <div class="container d-flex flex-column flex-md-row justify-content-between">
+            <a class="py-2 d-md-inline-block" href="logout">Logout</a>
+            <a class="py-2 n-none d-md-inline-block" href="editsections.xhtml">Sections</a>
+            <a class="py-2 n-none d-md-inline-block">Allezon</a>
+        </div>
+    </div>
+    <h1>My auctions</h1>
+
+    <h:outputText value="#{sessionScope.user.username}'s session"/><br/>
+    <h:outputLabel rendered="#{auctionController.getSessionProfileAuctions().size() == 0}">
+        <hr/>
+        <h2>You don't have any auctions</h2>
+    </h:outputLabel>
+
+    <div class="container">
+        <div class="row">
+            <c:forEach var="auction" items="#{auctionController.getSessionProfileAuctions()}">
+
+                <div class="col-md-4" style="cursor: pointer" onclick="window.location='edit.xhtml?auction_id=#{auction.id}'">
+                    <div class="card mb-4 box-shadow">
+                        <h:graphicImage class="card-img-top" style="height: 225px; width: 100%; display: block;"
+                                        value="/image?name=#{auction.getFirstImageName()}" alt=""/>
+                        <div class="card-body">
+                            <p class="card-text">
+                                <b>${auction.title}</b><br/>
+                                ${auction.owner.username}'s Auction<br/>
+                                ${auction.prettyPrice}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+            <div class="col-md-4">
+                <div class="card mb-4 box-shadow dummy" onclick="window.location='myauctionsupload.xhtml'">
+                    <div class="card-img-top" style="height: 225px; width: 100%; display: block; background: darkgray">
+                    </div>
+                    <div style="color: gray" class="card-body">
+                        New Auction
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</h:body>
+</html>

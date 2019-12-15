@@ -1,4 +1,4 @@
-package pl.edu.pjwstk.jaz.webapp;
+package pl.edu.pjwstk.jaz.register;
 
 import pl.edu.pjwstk.jaz.auth.ProfileRepository;
 import pl.edu.pjwstk.jaz.register.RegisterRequest;
@@ -45,6 +45,6 @@ public class RegisterController {
 
         context.getExternalContext().getSessionMap().put("user", registerRequest.getUsername());
 
-        return "welcome";
+        return "myauctions";
     }
 }

@@ -1,4 +1,4 @@
-package pl.edu.pjwstk.jaz.webapp;
+package pl.edu.pjwstk.jaz.login;
 
 import pl.edu.pjwstk.jaz.auth.ProfileEntity;
 import pl.edu.pjwstk.jaz.auth.ProfileRepository;
@@ -8,6 +8,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.Map;
 
 @Named
 @RequestScoped
@@ -27,6 +28,12 @@ public class LoginController {
     public boolean isFailed() {
         return !errorMessage.isEmpty();
     }
+//
+//    public String logout() {
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        context.getExternalContext().getSessionMap().remove("user", loginRequest.getUsername());
+//        return "index";
+//    }
 
     public String login() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -39,12 +46,12 @@ public class LoginController {
             return "login";
         }
 
-        if (profileRepository.profileMatchesPassword(profile, loginRequest.getPassword())) {
-            context.getExternalContext().getSessionMap().put("user", loginRequest.getUsername());
-            return "welcome";
-        } else {
+        if (!profileRepository.profileMatchesPassword(profile, loginRequest.getPassword())) {
             errorMessage = "Wrong password";
             return "login";
         }
+        Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
+        sessionMap.put("user", profile);
+        return "myauctions?faces-redirect=true";
     }
 }

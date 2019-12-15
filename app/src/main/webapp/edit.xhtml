@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+<h:head>
+    <title>Editing</title>
+    <h:outputStylesheet name="bootstrap.min.css" library="css"/>
+    <h:outputStylesheet name="main.css" library="css"/>
+
+
+    <!-- https://summernote.org/getting-started/ -->
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet"/>
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet"/>
+
+</h:head>
+<h:body styleClass="text-center">
+    <div class="site-header sticky-top py-1">
+        <div class="container d-flex flex-column flex-md-row justify-content-between">
+            <a class="py-2 d-md-inline-block" href="logout">Logout</a>
+            <a class="py-2 d-md-inline-block" href="myauctions.xhtml">My Auctions</a>
+            <a class="py-2 n-none d-md-inline-block">Allezon</a>
+        </div>
+    </div>
+    <h1>Edit your auction</h1>
+
+    <h:outputText value="#{sessionScope.user.username}'s session"/><br/>
+    <c:set var="auction_id" value="#{param['auction_id']}"/>
+    <c:set var="auction" value="#{auctionController.getAuction(auction_id)}"/>
+    <h:form styleClass="needs-validation" enctype="multipart/form-data" id="formId">
+        <div class="form-row">
+            <div class="col mb-3">
+                <h:inputText styleClass="form-control" name="title" id="title"
+                             a:placeholder="Title" value="#{auctionRequest.title}">
+                    <f:validateLength minimum="3" maximum="50"/>
+                </h:inputText>
+            </div>
+            <div class="col mb-3">
+                <h:inputText a:type="number" a:min="0.00" a:step="0.01" styleClass="form-control" name="price"
+                             a:placeholder="Price" value="#{auctionRequest.price}" id="price"/>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col mb-3">
+                <h:inputText a:type="hidden" styleClass="form-control" id="htmlFileContents"
+                             value="#{auctionRequest.htmlFileContents}">
+                </h:inputText>
+                <div id="summernote"></div>
+            </div>
+        </div>
+        <!--        <h:outputText value="#{auction.category}">-->
+        <div class="form-row">
+            <div class="col mb-3">
+                <h:inputFile value="#{auctionRequest.files}" a:multiple="true" id="files"/>
+            </div>
+        </div>
+        <h:commandButton value="Commit Changes" id="commandButtonUpload" action="#{auctionController.update}">
+            <f:param name="auction_id_parameter" value="#{auction_id}"/>
+        </h:commandButton>
+        <h:commandButton id="commandButtonRemove" value="Remove Auction" action="#{auctionController.remove}">
+            <f:param name="auction_id_parameter" value="#{auction_id}"/>
+        </h:commandButton>
+    </h:form>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js" type="application/javascript"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js" type="application/javascript"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"
+            type="application/javascript"></script>
+
+    <script type="application/javascript">
+        $(function () {
+            document.getElementById('formId:commandButtonUpload').onmousedown = function () {
+                document.getElementById('formId:htmlFileContents').value = summernoteElement.summernote('code')
+            };
+
+            let summernoteElement = $('#summernote');
+
+            summernoteElement.summernote('code', "#{myUtilsNamed.addSlashes(auction.htmlFileContents)}");
+            document.onkeypress = function () {
+                console.log(summernoteElement.summernote('code'))
+            };
+            document.getElementById('formId:title').value = "#{auction.title}";
+            document.getElementById('formId:price').value = "#{auction.getPriceAsDouble()}";
+        });
+    </script>
+</h:body>
+</html>
