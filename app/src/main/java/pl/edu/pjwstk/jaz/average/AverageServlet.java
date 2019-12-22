@@ -20,15 +20,22 @@ public class AverageServlet extends HttpServlet {
 
         PrintWriter respWriter = resp.getWriter();
 
-        ArrayList<Integer> input_ints = AverageTools.string_to_ints(req.getParameter("average"));
+        String stringInput = req.getParameter("average");
 
-        if (input_ints.size() == 0)
+        if (stringInput == null){
+            respWriter.println("Parameter `average` was not found");
+            return;
+        }
+
+        ArrayList<Integer> inputInts = AverageTools.stringToInts(stringInput);
+
+        if (inputInts.size() == 0)
             respWriter.println("Could not calculate average\nNo ints were found");
         else
             respWriter.println(String.format(
                     "Average of (%s) is %s",
-                    AverageTools.join_ints(", ", input_ints),
-                    AverageTools.average(input_ints)
+                    AverageTools.joinInts(", ", inputInts),
+                    AverageTools.average(inputInts)
             ));
     }
 }
@@ -36,13 +43,13 @@ public class AverageServlet extends HttpServlet {
 
 class AverageTools {
 
-    public static ArrayList<Integer> string_to_ints(String input) {
+    public static ArrayList<Integer> stringToInts(String input) {
 
         ArrayList<Integer> result = new ArrayList<>();
 
-        for (String string_number : input.split("[^0-9]"))
-            if (!string_number.isEmpty())
-                result.add(Integer.parseInt(string_number));
+        for (String stringNumber : input.split("[^0-9]"))
+            if (!stringNumber.isEmpty())
+                result.add(Integer.parseInt(stringNumber));
 
         return result;
     }
@@ -55,14 +62,14 @@ class AverageTools {
         return average(numbers.stream().mapToInt(i -> i).toArray());
     }
 
-    public static String join_ints(String joint, ArrayList<Integer> ints) {
-        StringBuilder result_builder = new StringBuilder();
+    public static String joinInts(String joint, ArrayList<Integer> ints) {
+        StringBuilder resultBuilder = new StringBuilder();
         Iterator<Integer> iter = ints.iterator();
         while (iter.hasNext()) {
-            result_builder.append(iter.next());
+            resultBuilder.append(iter.next());
             if (iter.hasNext())
-                result_builder.append(joint);
+                resultBuilder.append(joint);
         }
-        return result_builder.toString();
+        return resultBuilder.toString();
     }
 }
