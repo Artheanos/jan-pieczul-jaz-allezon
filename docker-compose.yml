@@ -20,7 +20,7 @@ services:
 
 volumes:
   postgres-data:
-#    driver: local
+    driver: local
 
 networks:
   lonczepsql:

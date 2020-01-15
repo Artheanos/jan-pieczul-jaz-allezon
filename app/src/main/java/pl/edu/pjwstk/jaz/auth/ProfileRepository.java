@@ -53,10 +53,10 @@ public class ProfileRepository {
     }
 
     @Transactional
-    public void createProfile(RegisterRequest registerRequest) {
+    public ProfileEntity createProfile(RegisterRequest registerRequest) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        ProfileEntity profile = new ProfileEntity(
+        return new ProfileEntity(
                 registerRequest.getName(),
                 registerRequest.getSurname(),
                 registerRequest.getUsername(),
@@ -64,7 +64,10 @@ public class ProfileRepository {
                 registerRequest.getEmail(),
                 registerRequest.getBirthDate()
         );
+    }
 
-        em.persist(profile);
+    @Transactional
+    public void saveProfile(ProfileEntity profileEntity) {
+        em.persist(profileEntity);
     }
 }

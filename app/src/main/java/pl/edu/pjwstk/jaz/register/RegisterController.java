@@ -1,5 +1,6 @@
 package pl.edu.pjwstk.jaz.register;
 
+import pl.edu.pjwstk.jaz.auth.ProfileEntity;
 import pl.edu.pjwstk.jaz.auth.ProfileRepository;
 import pl.edu.pjwstk.jaz.register.RegisterRequest;
 
@@ -24,7 +25,7 @@ public class RegisterController {
         return errorMessage;
     }
 
-    public boolean isFailed(){
+    public boolean isFailed() {
         return !errorMessage.isEmpty();
     }
 
@@ -40,10 +41,11 @@ public class RegisterController {
             return "register";
         }
 
-        profileRepository.createProfile(registerRequest);
-        FacesContext context = FacesContext.getCurrentInstance();
+        ProfileEntity newProfile = profileRepository.createProfile(registerRequest);
+        profileRepository.saveProfile(newProfile);
 
-        context.getExternalContext().getSessionMap().put("user", registerRequest.getUsername());
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getSessionMap().put("user", newProfile);
 
         return "myauctions";
     }

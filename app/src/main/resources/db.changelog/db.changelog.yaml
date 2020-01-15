@@ -6,3 +6,11 @@ databaseChangeLog:
         relativeToChangelogFile: true
         splitStatements: false
         path: 20191021_init.sql
+
+  - changeSet:
+      id: 20200115_add_auction
+      author: Jan Pieczul
+      sqlFile:
+        relativeToChangelogFile: true
+        splitStatements: false
+        path: 20200115_add_auction.sql
