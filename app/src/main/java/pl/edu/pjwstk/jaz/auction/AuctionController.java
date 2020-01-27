@@ -2,6 +2,7 @@ package pl.edu.pjwstk.jaz.auction;
 
 import pl.edu.pjwstk.jaz.auction.image.ImageEntity;
 import pl.edu.pjwstk.jaz.auction.image.ImageRepository;
+import pl.edu.pjwstk.jaz.auction.section.SectionController;
 import pl.edu.pjwstk.jaz.auction.section.category.CategoryEntity;
 import pl.edu.pjwstk.jaz.auction.section.category.CategoryRepository;
 import pl.edu.pjwstk.jaz.auth.ProfileEntity;
@@ -75,11 +76,12 @@ public class AuctionController implements Serializable {
     public String update(/* Auction id is taken from requestParameterMap */) {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         long id = Long.parseLong(params.get("auction_id_parameter"));
-        System.out.println("auctionRequest.getHtmlFileContents() = " + auctionRequest.getHtmlFileContents());
 
         AuctionEntity newAuction = new AuctionEntity();
 
         newAuction.setTitle(auctionRequest.getTitle());
+        newAuction.setCategory(categoryRepository.getCategoryByName(auctionRequest.getCategory()));
+
         // TODO updating auction's html works by always creating a new html file and deleting the old one
         newAuction.setHtmlFileName(
                 auctionRepository.createHtmlFile(auctionRequest.getHtmlFileContents())

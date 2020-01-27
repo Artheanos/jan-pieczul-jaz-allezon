@@ -80,14 +80,15 @@
             document.onkeypress = function () {
                 console.log(summernoteElement.summernote('code'))
             };
+
             document.getElementById('formId:title').value = "#{auction.title}";
+
             document.getElementById('formId:price').value = "#{auction.getPriceAsDouble()}";
+
             let select = document.getElementById('formId:categoryReal');
-            for (let i in select.options) {
-                if (select.options[i].label === '${auction.category.name}') {
+            for (let i in select.options)
+                if (select.options[i].label === '${auction.category.name}')
                     select.selectedIndex = i;
-                }
-            }
         });
     </script>
 </h:body>

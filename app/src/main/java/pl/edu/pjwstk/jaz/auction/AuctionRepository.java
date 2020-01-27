@@ -48,8 +48,8 @@ public class AuctionRepository {
             realAuction.setImages(newAuction.getImages());
         if (newAuction.getOwner() != null)
             realAuction.setOwner(newAuction.getOwner());
-//        if (newAuction.getCategory() != null)
-//            realAuction.setCategory(newAuction.getCategory());
+        if (newAuction.getCategory() != null)
+            realAuction.setCategory(newAuction.getCategory());
     }
 
     @Transactional
