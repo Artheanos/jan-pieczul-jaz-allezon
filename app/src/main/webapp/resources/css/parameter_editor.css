@@ -1,0 +1,37 @@
+tr {
+    height: 20px;
+}
+
+.dummy {
+    background-color: darkgrey !important;
+    line-height: 150%;
+    cursor: pointer;
+}
+
+.dummy > th {
+    text-align: center;
+    font-size: 250%;
+    color: white;
+}
+
+.new-parameter {
+    background-color: greenyellow;
+}
+
+.parameter-value {
+    display: inline-block;
+}
+
+.btn-danger {
+    display: compact;
+    float: right;
+    transform: scale(.5);
+}
+
+.unfinished {
+    width: 100%;
+}
+
+.repeated {
+    background-color: red !important;
+}

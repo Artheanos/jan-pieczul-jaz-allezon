@@ -9,9 +9,8 @@
 
 <h:head>
     <title>Editing</title>
-    <h:outputStylesheet name="bootstrap.min.css" library="css"/>
+    <!--    <h:outputStylesheet name="bootstrap.min.css" library="css"/>-->
     <h:outputStylesheet name="main.css" library="css"/>
-
 
     <!-- https://summernote.org/getting-started/ -->
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet"/>
@@ -19,13 +18,6 @@
 
 </h:head>
 <h:body styleClass="text-center">
-    <div class="site-header sticky-top py-1">
-        <div class="container d-flex flex-column flex-md-row justify-content-between">
-            <a class="py-2 d-md-inline-block" href="logout">Logout</a>
-            <a class="py-2 d-md-inline-block" href="myauctions.xhtml">My Auctions</a>
-            <a class="py-2 n-none d-md-inline-block">Allezon</a>
-        </div>
-    </div>
     <h1>Edit your auction</h1>
 
     <h:outputText value="#{sessionScope.user.username}'s session"/><br/>
@@ -52,10 +44,16 @@
                 <div id="summernote"></div>
             </div>
         </div>
-        <!--        <h:outputText value="#{auction.category}">-->
         <div class="form-row">
             <div class="col mb-3">
                 <h:inputFile value="#{auctionRequest.files}" a:multiple="true" id="files"/>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="mb-3">
+                <h:selectOneMenu value="#{auctionRequest.category}" styleClass="form-control" id="categoryReal">
+                    <f:selectItems value="#{sectionController.nestedCategories}"/>
+                </h:selectOneMenu>
             </div>
         </div>
         <h:commandButton value="Commit Changes" id="commandButtonUpload" action="#{auctionController.update}">
@@ -70,7 +68,6 @@
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js" type="application/javascript"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"
             type="application/javascript"></script>
-
     <script type="application/javascript">
         $(function () {
             document.getElementById('formId:commandButtonUpload').onmousedown = function () {
@@ -85,6 +82,12 @@
             };
             document.getElementById('formId:title').value = "#{auction.title}";
             document.getElementById('formId:price').value = "#{auction.getPriceAsDouble()}";
+            let select = document.getElementById('formId:categoryReal');
+            for (let i in select.options) {
+                if (select.options[i].label === '${auction.category.name}') {
+                    select.selectedIndex = i;
+                }
+            }
         });
     </script>
 </h:body>

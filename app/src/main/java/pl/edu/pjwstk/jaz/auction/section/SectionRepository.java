@@ -23,6 +23,7 @@ public class SectionRepository {
 
     @Transactional
     public List<SectionEntity> getAllSections() {
+
         return em.createQuery(
                 "from SectionEntity",
                 SectionEntity.class

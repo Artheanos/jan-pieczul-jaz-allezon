@@ -6,8 +6,11 @@ import pl.edu.pjwstk.jaz.auction.section.category.CategoryRepository;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +45,29 @@ public class SectionController {
 
     public Map<String, Object> getSectionsAsMap() {
         return sectionRepository.getSectionsAsMap();
+    }
+
+    public List<SelectItem> getNestedCategories() {
+        List<SelectItem> result = new ArrayList<>();
+
+        SelectItemGroup group1 = new SelectItemGroup("Group 1");
+        group1.setSelectItems(new SelectItem[]{
+                new SelectItem("Group 1 Value 1", "Group 1 Label 1"),
+                new SelectItem("Group 1 Value 2", "Group 1 Label 2"),
+                new SelectItem("Group 1 Value 3", "Group 1 Label 3")
+        });
+
+        for (SectionEntity sectionEntity : getAllSections()) {
+            List<SelectItem> subGroup = new ArrayList<>();
+            sectionEntity.getCategories().forEach(cat -> subGroup.add(new SelectItem(cat.getName(), cat.getName())));
+
+            SelectItemGroup group = new SelectItemGroup(sectionEntity.getName());
+            group.setSelectItems(subGroup.toArray(new SelectItem[0]));
+
+            result.add(group);
+        }
+
+        return result;
     }
 
     public String commitSections() {
