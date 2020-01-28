@@ -43,6 +43,6 @@ public class ImageEntity {
     }
 
     public String getUrl() {
-        return "/app/javax.faces.resource/" + getName();
+        return "/app/image?name=" + getName();
     }
 }

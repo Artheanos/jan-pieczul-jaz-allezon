@@ -73,7 +73,7 @@ public class AuctionController implements Serializable {
         return "myauctions?faces-redirect=true";
     }
 
-    public String update(/* Auction id is taken from requestParameterMap */) {
+    public String update(/* Auction id is accessed from requestParameterMap */) throws ServletException, IOException {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         long id = Long.parseLong(params.get("auction_id_parameter"));
 
@@ -88,6 +88,14 @@ public class AuctionController implements Serializable {
         );
 
         auctionRepository.updateAuction(newAuction, id);
+
+        for (Part imageFile : getAllParts(auctionRequest.getFiles())) {
+            ImageEntity image = imageRepository.createImage(imageFile);
+            auctionRepository.addImageToAuction(newAuction, image);
+        }
+
+        for (String imageName : auctionRequest.getSplitDeletedImages())
+            imageRepository.removeImage(imageRepository.getImage(imageName));
 
         return "myauctions?faces-redirect=true";
     }
@@ -110,7 +118,7 @@ public class AuctionController implements Serializable {
         return auctionRepository.getAuction(id);
     }
 
-    public String remove(/* Auction id is taken from requestParameterMap */) {
+    public String remove(/* Auction id is accessed from requestParameterMap */) {
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         auctionRepository.removeAuction(auctionRepository.getAuction(Long.parseLong(params.get("auction_id_parameter"))));
         return "myauctions";

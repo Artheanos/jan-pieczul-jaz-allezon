@@ -2,7 +2,7 @@ package pl.edu.pjwstk.jaz.auction.parameter;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-
+import pl.edu.pjwstk.jaz.utils.MyUtils;
 
 @Named
 @RequestScoped
@@ -22,21 +22,15 @@ public class ParameterRequest {
         this.addedParameters = addedParameters;
     }
 
-    private String[] mySplit(String s) {
-        if (s.strip().isEmpty())
-            return new String[]{};
-        return s.split("[|]");
-    }
-
     public void setRemovedParameters(String removedParameters) {
         this.removedParameters = removedParameters;
     }
 
     public String[] getSplitAddedParameters() {
-        return mySplit(addedParameters);
+        return MyUtils.mySplit(addedParameters);
     }
 
     public String[] getSplitRemovedParameters() {
-        return mySplit(removedParameters);
+        return MyUtils.mySplit(removedParameters);
     }
 }

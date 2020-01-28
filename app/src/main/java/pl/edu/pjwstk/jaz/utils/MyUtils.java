@@ -59,4 +59,9 @@ public class MyUtils {
         return result.toString();
     }
 
+    public static String[] mySplit(String s) {
+        if (s.strip().isEmpty())
+            return new String[]{};
+        return s.split("[|]");
+    }
 }

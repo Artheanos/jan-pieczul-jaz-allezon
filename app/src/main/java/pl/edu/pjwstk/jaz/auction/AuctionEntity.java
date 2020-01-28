@@ -9,8 +9,10 @@ import pl.edu.pjwstk.jaz.utils.MyUtils;
 import javax.persistence.*;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import static pl.edu.pjwstk.jaz.utils.MyUtils.RESOURCES_PATH;
 
@@ -26,7 +28,7 @@ public class AuctionEntity {
     private String htmlFileName;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "auction")
-    private Set<ImageEntity> images = new HashSet<>();
+    private List<ImageEntity> images = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id")
@@ -123,11 +125,11 @@ public class AuctionEntity {
         this.htmlFileName = htmlFileName;
     }
 
-    public Set<ImageEntity> getImages() {
+    public List<ImageEntity> getImages() {
         return images;
     }
 
-    public void setImages(Set<ImageEntity> images) {
+    public void setImages(List<ImageEntity> images) {
         this.images = images;
     }
 

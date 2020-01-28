@@ -1,5 +1,7 @@
 package pl.edu.pjwstk.jaz.auction;
 
+import pl.edu.pjwstk.jaz.utils.MyUtils;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.servlet.http.Part;
@@ -13,6 +15,7 @@ public class AuctionRequest {
     private String htmlFileContents;
     private Part files;
     private String category;
+    private String deletedImages;
 
     public String getTitle() {
         return title;
@@ -52,5 +55,17 @@ public class AuctionRequest {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getDeletedImages() {
+        return deletedImages;
+    }
+
+    public String[] getSplitDeletedImages() {
+        return MyUtils.mySplit(deletedImages);
+    }
+
+    public void setDeletedImages(String deletedImages) {
+        this.deletedImages = deletedImages;
     }
 }
