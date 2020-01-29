@@ -87,6 +87,39 @@
             </div>
         </div>
 
+        <c:forEach var="auctionParameter"
+                   items="${parameterController.getAuctionProfileEntitiesOfAuction(auction)}">
+            <div class="row parameter-choice">
+                <div class="mb-3">
+                    <div class="col-sm-6">
+                        <select class="form-control">
+                            <c:forEach var="parameter" items="#{parameterController.allParameters}">
+                                <c:choose>
+                                    <c:when test="${auctionParameter.parameter.name == parameter.name}">
+                                        <option selected="selected">${parameter.name}</option>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option>${parameter.name}</option>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <input class="form-control" value="${auctionParameter.value}"/>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+
+        <div class="row mb-3">
+            <a class="btn" id="addParameterChoiceButton" onclick="addParameterChoice()">Add parameter</a>
+        </div>
+
+        <div class="row mb-3">
+            <div>To delete a parameter leave its value empty</div>
+        </div>
+
         <div class="row">
             <div class="mb-3">
                 <h:commandButton value="Commit Changes" id="commandButtonUpload" action="#{auctionController.update}"
@@ -100,10 +133,24 @@
             </div>
         </div>
 
-        <h:inputText value="#{auctionRequest.deletedImages}" id="deletedImages" styleClass="hidden">
-
-        </h:inputText>
+        <h:inputText value="#{auctionRequest.deletedImages}" id="deletedImages" styleClass="hidden"/>
+        <h:inputText value="#{auctionRequest.parameterValues}" id="parameterValues" styleClass="hidden"/>
     </h:form>
+
+    <div class="row hidden" id="cloneableParameterChoice">
+        <div class="mb-3">
+            <div class="col-sm-6">
+                <select class="form-control">
+                    <c:forEach var="parameter" items="#{parameterController.allParameters}">
+                        <option>${parameter.name}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="col-sm-6">
+                <input class="form-control"/>
+            </div>
+        </div>
+    </div>
 
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js" type="application/javascript"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js" type="application/javascript"></script>
@@ -117,9 +164,27 @@
             this.parentElement.remove();
         });
 
+
+        function addParameterChoice() {
+            let newElement = document.getElementById('cloneableParameterChoice').cloneNode(true);
+            newElement.classList.remove('hidden');
+            newElement.classList.add('parameter-choice');
+            newElement.removeAttribute('id');
+            document.getElementById('formId').insertBefore(newElement, document.getElementById('addParameterChoiceButton').parentElement);
+        }
+
         document.getElementById('formId:commandButtonUpload').onmousedown = function () {
             document.getElementById('formId:htmlFileContents').value = summernoteElement.summernote('code');
             document.getElementById('formId:deletedImages').value = deletedImages.join('|');
+
+            let allElements = document.getElementsByClassName('parameter-choice');
+            let result = "";
+            for (let i of allElements) {
+                let mb3Children = i.firstElementChild.children;
+                result += mb3Children[0].firstElementChild.selectedOptions[0].innerText + '=';
+                result += mb3Children[1].firstElementChild.value + '|';
+            }
+            document.getElementById('formId:parameterValues').value = result;
         };
 
         let summernoteElement = $('#summernote');

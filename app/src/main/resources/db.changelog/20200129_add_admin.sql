@@ -1,0 +1,1 @@
+alter table profile add column IF NOT EXISTS admin boolean;

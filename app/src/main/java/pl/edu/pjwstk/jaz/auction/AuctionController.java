@@ -2,10 +2,14 @@ package pl.edu.pjwstk.jaz.auction;
 
 import pl.edu.pjwstk.jaz.auction.image.ImageEntity;
 import pl.edu.pjwstk.jaz.auction.image.ImageRepository;
-import pl.edu.pjwstk.jaz.auction.section.SectionController;
+import pl.edu.pjwstk.jaz.auction.parameter.ParameterEntity;
+import pl.edu.pjwstk.jaz.auction.parameter.ParameterRepository;
+import pl.edu.pjwstk.jaz.auction.parameter.auction_parameter.AuctionParameterEntity;
+import pl.edu.pjwstk.jaz.auction.parameter.auction_parameter.AuctionParameterId;
 import pl.edu.pjwstk.jaz.auction.section.category.CategoryEntity;
 import pl.edu.pjwstk.jaz.auction.section.category.CategoryRepository;
 import pl.edu.pjwstk.jaz.auth.ProfileEntity;
+import pl.edu.pjwstk.jaz.utils.MyUtils;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -16,7 +20,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Named
@@ -30,6 +37,8 @@ public class AuctionController implements Serializable {
     private ImageRepository imageRepository;
     @Inject
     private CategoryRepository categoryRepository;
+    @Inject
+    private ParameterRepository parameterRepository;
 
     public static Collection<Part> getAllParts(Part part) throws ServletException, IOException {
         /* https://stackoverflow.com/a/36503203 */
@@ -70,6 +79,14 @@ public class AuctionController implements Serializable {
             auctionRepository.addImageToAuction(newAuction, image);
         }
 
+        for (String nameEqualsValue : MyUtils.mySplit(auctionRequest.getParameterValues())) {
+            String[] nameValue = nameEqualsValue.split("=");
+            if (nameValue.length != 2)
+                continue;
+            ParameterEntity parameter = parameterRepository.getParameterByName(nameValue[0]);
+            auctionRepository.addParameterToAuction(newAuction.getId(), parameter.getId(), nameValue[1]);
+        }
+
         return "myauctions?faces-redirect=true";
     }
 
@@ -96,6 +113,14 @@ public class AuctionController implements Serializable {
 
         for (String imageName : auctionRequest.getSplitDeletedImages())
             imageRepository.removeImage(imageRepository.getImage(imageName));
+
+        for (String nameEqualsValue : MyUtils.mySplit(auctionRequest.getParameterValues())) {
+            String[] nameValue = nameEqualsValue.split("=");
+            if (nameValue.length != 2)
+                continue;
+            ParameterEntity parameter = parameterRepository.getParameterByName(nameValue[0]);
+            auctionRepository.addParameterToAuction(newAuction.getId(), parameter.getId(), nameValue[1]);
+        }
 
         return "myauctions?faces-redirect=true";
     }

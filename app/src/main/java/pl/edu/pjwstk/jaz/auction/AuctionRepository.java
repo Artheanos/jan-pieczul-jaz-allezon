@@ -3,6 +3,10 @@ package pl.edu.pjwstk.jaz.auction;
 
 import pl.edu.pjwstk.jaz.auction.image.ImageEntity;
 import pl.edu.pjwstk.jaz.auction.image.ImageRepository;
+import pl.edu.pjwstk.jaz.auction.parameter.ParameterEntity;
+import pl.edu.pjwstk.jaz.auction.parameter.ParameterRepository;
+import pl.edu.pjwstk.jaz.auction.parameter.auction_parameter.AuctionParameterEntity;
+import pl.edu.pjwstk.jaz.auction.parameter.auction_parameter.AuctionParameterId;
 import pl.edu.pjwstk.jaz.auction.section.category.CategoryEntity;
 import pl.edu.pjwstk.jaz.auth.ProfileEntity;
 import pl.edu.pjwstk.jaz.utils.MyUtils;
@@ -10,6 +14,7 @@ import pl.edu.pjwstk.jaz.utils.MyUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Parameter;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.io.*;
@@ -24,6 +29,9 @@ public class AuctionRepository {
     @Inject
     private ImageRepository imageRepository;
 
+    @Inject
+    private ParameterRepository parameterRepository;
+
     @Transactional
     public AuctionEntity getAuction(long id) {
         return em.find(AuctionEntity.class, id);
@@ -37,6 +45,12 @@ public class AuctionRepository {
     @Transactional
     public void updateAuction(AuctionEntity newAuction) {
         AuctionEntity realAuction = em.find(AuctionEntity.class, newAuction.getId());
+
+        if (newAuction.getAuctionParameterEntities() != null) {
+            for (AuctionParameterEntity auctionParameter : realAuction.getAuctionParameterEntities())
+                parameterRepository.removeAuctionParameter(auctionParameter);
+            realAuction.setAuctionParameterEntities(newAuction.getAuctionParameterEntities());
+        }
 
         if (newAuction.getTitle() != null)
             realAuction.setTitle(newAuction.getTitle());
@@ -65,6 +79,9 @@ public class AuctionRepository {
             imageRepository.removeImage(image);
 
         auction.removeHtmlFile();
+        for (AuctionParameterEntity auctionParameter : auction.getAuctionParameterEntities())
+            parameterRepository.removeAuctionParameter(auctionParameter);
+
         em.remove(em.merge(auction));
     }
 
@@ -75,8 +92,13 @@ public class AuctionRepository {
     }
 
     @Transactional
-    public void createAuction() {
-
+    public void addParameterToAuction(Long auctionId, Long parameterId, String parameterValue) {
+        AuctionParameterEntity auctionParameter = new AuctionParameterEntity(
+                em.getReference(AuctionEntity.class, auctionId),
+                em.getReference(ParameterEntity.class, parameterId),
+                parameterValue
+        );
+        em.persist(auctionParameter);
     }
 
     @Transactional

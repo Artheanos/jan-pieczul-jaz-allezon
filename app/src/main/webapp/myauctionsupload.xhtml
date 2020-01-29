@@ -51,16 +51,25 @@
             <h:selectOneMenu value="#{auctionRequest.category}" styleClass="form-control" id="categoryReal">
                 <f:selectItems value="#{sectionController.nestedCategories}"/>
             </h:selectOneMenu>
-            <!--            <select class="hidden" id="categoryFake">-->
-            <!--                <c:forEach var="section" items="${sectionController.allSections}">-->
-            <!--                    <optgroup label="${section.name}">-->
-            <!--                        <c:forEach var="category" items="${section.categories}">-->
-            <!--                            <option value="${category.name}">${category.name}</option>-->
-            <!--                        </c:forEach>-->
-            <!--                    </optgroup>-->
-            <!--                </c:forEach>-->
-            <!--            </select>-->
         </div>
+    </div>
+    <div class="row hidden" id="cloneableParameterChoice">
+        <div class="mb-3">
+            <div class="col-sm-6">
+                <select class="form-control">
+                    <c:forEach var="parameter" items="#{parameterController.allParameters}">
+                        <option>${parameter.name}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="col-sm-6">
+                <input class="form-control"/>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <a class="btn" id="addParameterChoiceButton" onclick="addParameterChoice()">Add parameter</a>
+        <h:inputHidden value="#{auctionRequest.parameterValues}" id="parameterValues"/>
     </div>
     <h:commandButton styleClass="btn btn-primary" id="commandButton" value="Create"
                      action="#{auctionController.upload}"/>
@@ -78,13 +87,31 @@
 
         document.getElementById('formId:commandButton').onmousedown = function () {
             document.getElementById('formId:htmlFileContents').value = summernoteElement.summernote('code');
+
+            let allElements = document.getElementsByClassName('parameter-choice');
+            let result = "";
+            for (let i of allElements) {
+                let mb3Children = i.firstElementChild.children;
+                result += mb3Children[0].firstElementChild.selectedOptions[0].innerText + '=';
+                result += mb3Children[1].firstElementChild.value + '|';
+            }
+            document.getElementById('formId:parameterValues').value = result;
         };
 
         summernoteElement.summernote();
         summernoteElement.summernote('code', "${auction.htmlFileContents}");
 
         document.getElementById('formId:categoryReal').innerHTML = document.getElementById('categoryFake').innerHTML;
+
     });
+
+    function addParameterChoice() {
+        let newElement = document.getElementById('cloneableParameterChoice').cloneNode(true);
+        newElement.classList.remove('hidden');
+        newElement.classList.add('parameter-choice');
+        newElement.removeAttribute('id');
+        document.getElementById('formId').insertBefore(newElement, document.getElementById('addParameterChoiceButton').parentElement);
+    }
 </script>
 </body>
 </html>

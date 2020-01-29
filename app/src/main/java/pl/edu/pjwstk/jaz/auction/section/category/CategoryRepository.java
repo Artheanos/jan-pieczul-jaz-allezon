@@ -65,7 +65,6 @@ public class CategoryRepository {
                 "from CategoryEntity where name = :_name",
                 CategoryEntity.class
         ).setParameter("_name", name).getResultList();
-
         return tmp.isEmpty() ? null : tmp.get(0);
     }
 }

@@ -16,6 +16,7 @@ public class AuctionRequest {
     private Part files;
     private String category;
     private String deletedImages;
+    private String parameterValues;
 
     public String getTitle() {
         return title;
@@ -67,5 +68,13 @@ public class AuctionRequest {
 
     public void setDeletedImages(String deletedImages) {
         this.deletedImages = deletedImages;
+    }
+
+    public String getParameterValues() {
+        return parameterValues;
+    }
+
+    public void setParameterValues(String parameterValues) {
+        this.parameterValues = parameterValues;
     }
 }

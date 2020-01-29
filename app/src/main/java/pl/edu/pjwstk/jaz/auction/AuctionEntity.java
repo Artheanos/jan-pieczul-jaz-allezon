@@ -2,16 +2,15 @@ package pl.edu.pjwstk.jaz.auction;
 
 import com.sun.istack.Nullable;
 import pl.edu.pjwstk.jaz.auction.image.ImageEntity;
+import pl.edu.pjwstk.jaz.auction.parameter.ParameterEntity;
+import pl.edu.pjwstk.jaz.auction.parameter.auction_parameter.AuctionParameterEntity;
 import pl.edu.pjwstk.jaz.auction.section.category.CategoryEntity;
 import pl.edu.pjwstk.jaz.auth.ProfileEntity;
 import pl.edu.pjwstk.jaz.utils.MyUtils;
 
 import javax.persistence.*;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
 
 import static pl.edu.pjwstk.jaz.utils.MyUtils.RESOURCES_PATH;
@@ -38,6 +37,9 @@ public class AuctionEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "auction")
+    private Set<AuctionParameterEntity> auctionParameterEntities = new HashSet<>();
 
     final static public String HTML_FILES_PATH = MyUtils.joinPaths(RESOURCES_PATH, "htmls");
 
@@ -138,6 +140,11 @@ public class AuctionEntity {
         imageEntity.setAuction(this);
     }
 
+    public void addAuctionParameter(AuctionParameterEntity auctionParameterEntity) {
+        auctionParameterEntities.add(auctionParameterEntity);
+        auctionParameterEntity.setAuction(this);
+    }
+
     public String getFirstImageName() {
         if (images.size() > 0)
             return images.iterator().next().getName();
@@ -215,4 +222,12 @@ public class AuctionEntity {
         this.category = category;
     }
 
+
+    public Set<AuctionParameterEntity> getAuctionParameterEntities() {
+        return auctionParameterEntities;
+    }
+
+    public void setAuctionParameterEntities(Set<AuctionParameterEntity> auctionParameterEntities) {
+        this.auctionParameterEntities = auctionParameterEntities;
+    }
 }

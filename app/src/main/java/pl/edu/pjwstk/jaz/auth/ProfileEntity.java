@@ -20,6 +20,7 @@ public class ProfileEntity {
     private String encryptedPassword;
     private String email;
     private Date birthDate;
+    private Boolean admin;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
     private List<AuctionEntity> auctions = new ArrayList<>();
@@ -38,6 +39,7 @@ public class ProfileEntity {
         this.encryptedPassword = encryptedPassword;
         this.email = email;
         this.birthDate = birthDate;
+        this.admin = Boolean.FALSE;
     }
 
     public ProfileEntity() {
@@ -111,5 +113,13 @@ public class ProfileEntity {
 
     public void setAuctions(List<AuctionEntity> auctions) {
         this.auctions = auctions;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 }
